@@ -337,6 +337,8 @@
        :name name))))
 
 (defun make-rod-xstream (string &key name)
+  (unless (typep string 'simple-array)
+    (setf string (coerce string 'simple-string)))
   ;; XXX encoding is mis-handled by this kind of stream
   (let ((n (length string)))
     (let ((buffer (make-array (1+ n) :element-type 'buffer-byte)))
