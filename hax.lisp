@@ -143,7 +143,7 @@
 
 (setf (documentation (find-package :hax) t)
       "An event protocol for HTML serialization, this package is similar
-       to the HAX protocol defined by cxml for XML serialization.
+       to the SAX protocol defined by cxml for XML serialization.
 
        (Technically, this package should have been spelled SAH, but HAX
        sounds better.)
@@ -305,7 +305,7 @@
        @arg[public-id]{nil or the Public ID, a rod/string}
        @arg[system-id]{nil or the System ID/URI, a rod/string}
        @return{unspecified}
-       @short{Signals the beginning on an HTML document.}
+       @short{Signals the beginning of an HTML document.}
 
        This is the first event sent to any handler.
 
@@ -326,7 +326,7 @@
        @return{unspecified}
        @short{Signals the beginning of an HTML element.}
 
-       This event corresponds to the opening tag of an element. 
+       This event corresponds to the opening tag of an element.
 
        Elements of the attribute list can have any class, but must implement
        the generic functions for attributes.  See @class{standard-attribute}
@@ -346,7 +346,7 @@
        @return{unspecified}
        @short{Signals the end of an HTML element.}
 
-       This event corresponds to the closing tag of an element. 
+       This event corresponds to the closing tag of an element.
 
        @see{start-document}
        @see{start-element}
@@ -388,7 +388,7 @@
       "@arg[handler]{a HAX/SAX handler
          (see @class{abstract-handler} for details)}
        @return{The return value of this function depends on the handler class.}
-       @short{Signals the end on an HTML document.}
+       @short{Signals the end of an HTML document.}
 
        This is the last event sent to any handler, and signals the end of
        serialization.
