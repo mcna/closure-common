@@ -25,7 +25,6 @@
                         :rune-is-character))
              (unless (or (<= #xD800 x #xDFFF)
 			 (and (< x char-code-limit) (code-char x)))
-	       (print (code-char x))
                (format t " no, reverting to octet strings.~%")
                (return :rune-is-integer)))
            *features*))

@@ -9,15 +9,15 @@
 
 ;;; Redistribution and use  in source and binary   forms, with or  without
 ;;; modification, are permitted provided that the following conditions are
-;;; met:                                                                  
-;;;                                                                   
+;;; met:
+;;;
 ;;; 1. Redistributions  of  source  code  must retain  the above copyright
-;;;    notice, this list of conditions and the following disclaimer.      
-;;;                                                                   
+;;;    notice, this list of conditions and the following disclaimer.
+;;;
 ;;; 2. Redistributions in  binary form must reproduce  the above copyright
 ;;;    notice, this list of conditions and the following disclaimer in the
 ;;;    documentation and/or other materials provided with the distribution
-;;;                                                                   
+;;;
 ;;; THIS  SOFTWARE   IS PROVIDED ``AS  IS''   AND ANY  EXPRESS  OR IMPLIED
 ;;; WARRANTIES, INCLUDING, BUT NOT LIMITED  TO, THE IMPLIED WARRANTIES  OF
 ;;; MERCHANTABILITY  AND FITNESS FOR A  PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -34,20 +34,23 @@
   (:use :common-lisp)
   (:export #:abstract-handler
 	   #:default-handler
-           
+
 	   #:make-attribute
 	   #:standard-attribute
            #:find-attribute
            #:attribute-name
            #:attribute-value
            #:attribute-specified-p
-	   
+
            #:start-document
            #:start-element
            #:characters
            #:end-element
            #:end-document
-           #:comment))
+           #:comment
+
+	   #+rune-is-integer
+	   #:%want-strings-p))
 
 (in-package :hax)
 
@@ -85,6 +88,11 @@
 
 (defclass abstract-handler () ())
 (defclass default-handler (abstract-handler) ())
+
+#+rune-is-integer
+(defgeneric %want-strings-p (handler)
+  (:method ((handler null)) nil)
+  (:method ((handler abstract-handler)) t))
 
 (defgeneric start-document (handler name public-id system-id)
   (:method ((handler null) name public-id system-id)

@@ -29,7 +29,7 @@
 (defun rod-reader (stream subchar arg)
   (runes::rod-string (runes::rod-reader stream subchar arg)))
 
-(setf runes-system:*utf8-runes-readtable*
+(setf closure-common-system:*utf8-runes-readtable*
       (let ((rt (copy-readtable)))
 	(set-dispatch-macro-character #\# #\/ 'rune-reader rt)
 	(set-dispatch-macro-character #\# #\" 'rod-reader rt)
