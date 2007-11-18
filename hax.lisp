@@ -45,6 +45,7 @@
            #:start-document
            #:start-element
            #:characters
+           #:unescaped
            #:end-element
            #:end-document
            #:comment
@@ -118,6 +119,14 @@
     (declare (ignore data))
     nil))
 
+(defgeneric unescaped (handler data)
+  (:method ((handler null) data)
+    (declare (ignore data))
+    nil)
+  (:method ((handler default-handler) data)
+    (declare (ignore data))
+    nil))
+
 (defgeneric end-element (handler name)
   (:method ((handler null) name)
     (declare (ignore name))
@@ -170,6 +179,7 @@
        @aboutfun{start-element}
        @aboutfun{end-element}
        @aboutfun{characters}
+       @aboutfun{unescaped}
        @aboutfun{comment}
        @aboutfun{end-document}
        @end{section}")
@@ -205,6 +215,7 @@
        @see{start-element}
        @see{end-element}
        @see{characters}
+       @see{unescaped}
        @see{comment}")
 
 (setf (documentation 'default-handler 'type)
@@ -222,6 +233,7 @@
        @see{start-element}
        @see{end-element}
        @see{characters}
+       @see{unescaped}
        @see{comment}")
 
 (setf (documentation 'standard-attribute 'type)
@@ -315,6 +327,7 @@
        @see{start-element}
        @see{end-element}
        @see{characters}
+       @see{unescaped}
        @see{comment}
        @see{end-document}")
 
@@ -336,6 +349,7 @@
        @see{start-document}
        @see{end-element}
        @see{characters}
+       @see{unescaped}
        @see{comment}
        @see{end-document}")
 
@@ -351,6 +365,7 @@
        @see{start-document}
        @see{start-element}
        @see{characters}
+       @see{unescaped}
        @see{comment}
        @see{end-document}")
 
@@ -362,6 +377,23 @@
        @short{Signals character data.}
 
        This event represents character data in a document.
+
+       @see{start-document}
+       @see{start-element}
+       @see{end-element}
+       @see{comment}
+       @see{end-document}")
+
+(setf (documentation 'unescaped 'function)
+      "@arg[handler]{a HAX/SAX handler
+         (see @class{abstract-handler} for details)}
+       @arg[data]{rod/string}
+       @return{unspecified}
+       @short{Escaping bypass.}
+
+       This event writes raw characters into a document.
+
+       Beware dragons.
 
        @see{start-document}
        @see{start-element}
@@ -382,6 +414,7 @@
        @see{start-element}
        @see{end-element}
        @see{characters}
+       @see{unescaped}
        @see{end-document}")
 
 (setf (documentation 'end-document 'function)
@@ -401,4 +434,5 @@
        @see{start-element}
        @see{end-element}
        @see{characters}
+       @see{unescaped}
        @see{comment}")
