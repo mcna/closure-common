@@ -76,14 +76,17 @@
     (when (plusp ptr)
       (let* ((in (ystream-in-buffer ystream))
 	     (out (ystream-out-buffer ystream))
+	     #+rune-is-utf-16
 	     (surrogatep (<= #xD800 (rune-code (elt in (1- ptr))) #xDBFF))
 	     n)
+	#+rune-is-utf-16
 	(when surrogatep
 	  (decf ptr))
 	(when (plusp ptr)
 	  (setf n (runes-to-utf8 out in ptr))
 	  (ystream-device-write ystream out n)
 	  (cond
+	    #+rune-is-utf-16
 	    (surrogatep
 	      (setf (elt in 0) (elt in (1- ptr)))
 	      (setf (ystream-in-ptr ystream) 1))
@@ -98,7 +101,7 @@
 
 (macrolet ((define-utf8-writer (name (byte &rest aux) result &body body)
 	     `(defun ,name (out in n)
-		(let ((high-surrogate nil)
+		(let (#+rune-is-utf-16 (high-surrogate nil)
 		      ,@aux)
 		  (labels
 		      ((write0 (,byte)
@@ -134,13 +137,19 @@
 			     (write0 (logior #b10000000 (ldb (byte 6 0) r))))))
 		       (write2 (r)
 			 (cond
+			   #+rune-is-utf-16
 			   ((<= #xD800 r #xDBFF)
 			     (setf high-surrogate r))
+			   #+rune-is-utf-16
 			   ((<= #xDC00 r #xDFFF)
 			     (let ((q (logior (ash (- high-surrogate #xD7C0) 10)
 					      (- r #xDC00))))
 			       (write1 q))
 			     (setf high-surrogate nil))
+			   #-rune-is-utf-16
+			   ((<= #xD800 r #xDFFF)
+			    (error
+			     "surrogates not allowed in this configuration"))
 			   (t
 			     (write1 r)))))
 		    (dotimes (j n)
@@ -259,7 +268,7 @@
 
 (defun utf8-string-to-rod (str)
   (let* ((bytes (map '(vector (unsigned-byte 8)) #'char-code str))
-         (buffer (make-array (length bytes) :element-type '(unsigned-byte 16)))
+         (buffer (make-array (length bytes) :element-type 'buffer-byte))
          (n (runes-encoding:decode-sequence
 	     :utf-8 bytes 0 (length bytes) buffer 0 0 nil))
          (result (make-array n :element-type 'rune)))

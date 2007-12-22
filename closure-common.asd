@@ -15,19 +15,31 @@
     (let (#+sbcl (*compile-print* nil))
       (call-next-method))))
 
-#-(or rune-is-character rune-is-integer)
 (progn
   (format t "~&;;; Checking for wide character support...")
   (force-output)
-  (pushnew (dotimes (x 65536
-                      (progn
-                        (format t " ok, characters have at least 16 bits.~%")
-                        :rune-is-character))
-             (unless (or (<= #xD800 x #xDFFF)
-			 (and (< x char-code-limit) (code-char x)))
-               (format t " no, reverting to octet strings.~%")
-               (return :rune-is-integer)))
-           *features*))
+  (flet ((test (code)
+	   (and (< code char-code-limit) (code-char code))))
+    (cond
+      ((not (test 50000))
+       (format t " no, reverting to octet strings.~%")
+       #+rune-is-character
+       (error "conflicting unicode configuration.  Please recompile.")
+       (pushnew :rune-is-integer *features*))
+      ((code-char 70000)
+       (when (test #xD800)
+	 (format t " WARNING: Lisp implementation doesn't use UTF-16, ~
+                     but accepts surrogate code points.~%"))
+       (format t " yes, using code points.~%")
+       #+(or rune-is-integer rune-is-utf-16)
+       (error "conflicting unicode configuration.  Please recompile.")
+       (pushnew :rune-is-character *features*))
+      (t
+       (format t " yes, using UTF-16.~%")
+       #+(or rune-is-integer (and rune-is-character (not rune-is-utf-16)))
+       (error "conflicting unicode configuration.  Please recompile.")
+       (pushnew :rune-is-utf-16 *features*)
+       (pushnew :rune-is-character *features*)))))
 
 #-rune-is-character
 (format t "~&;;; Building Closure with (UNSIGNED-BYTE 16) RUNES~%")

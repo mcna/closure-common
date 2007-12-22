@@ -1,5 +1,10 @@
 (in-package :runes-encoding)
 
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defparameter +buffer-byte+
+    #+rune-is-utf-16 '(unsigned-byte 16)
+    #-rune-is-utf-16 '(unsigned-byte 32)))
+
 (define-condition encoding-error (simple-error) ())
 
 (defun xerror (fmt &rest args)
@@ -82,7 +87,7 @@
 
 (defun make-simple-8-bit-encoding (&key charset)
   (make-instance 'simple-8-bit-encoding
-    :table (coerce (to-unicode-table charset) '(simple-array (unsigned-byte 16) (256)))))
+    :table (coerce (to-unicode-table charset) '(simple-array #.+buffer-byte+ (256)))))
 
 ;;;;;;;
 
@@ -150,16 +155,30 @@
         (return))
       (when (>= (%+ rptr 1) in-end)
         (return))
-      (let ((hi (aref in rptr))
-            (lo (aref in (%+ 1 rptr))))
+      (let* ((hi (aref in rptr))
+	     (lo (aref in (%+ 1 rptr)))
+	     (x (logior (ash hi 8) lo)))
+        (when (or (eql x #xFFFE) (eql x #xFFFF))
+	  (xerror "not a valid code point: #x~X" x))
+	(when (<= #xDC00 x #xDFFF)
+	  (xerror "unexpected high surrogate: #x~X" x))
+	(when (<= #xD800 x #xDBFF)
+	  ;; seen low surrogate, look for high surrogate now
+	  (when (>= (%+ rptr 3) in-end)
+	    (return))
+	  (let* ((hi2 (aref in (%+ 2 rptr)))
+		 (lo2 (aref in (%+ 3 rptr)))
+		 (y (logior (ash hi2 8) lo2)))
+	    (unless (<= #xDC00 x #xDFFF)
+	      (xerror "expected a high surrogate but found: #x~X" x))
+	    #-rune-is-utf-16
+	    (progn
+	      (setf x (logior (ash (%- x #xd7c0) 10) (%and y #x3FF)))
+	      (setf rptr (%+ 2 rptr))))
+	  ;; end of surrogate handling
+	  )
+	(setf (aref out wptr) x)
         (setf rptr (%+ 2 rptr))
-	;; FIXME: Wenn wir hier ein Surrogate sehen, muessen wir das naechste
-	;; Zeichen abwarten und nachgucken, dass nicht etwa die andere
-	;; Haelfte fehlt!
-        (let ((x (logior (ash hi 8) lo)))
-	  (when (or (eql x #xFFFE) (eql x #xFFFF))
-	    (xerror "not a valid code point: #x~X" x))
-	  (setf (aref out wptr) x))
         (setf wptr (%+ 1 wptr))))
     (values wptr rptr)))
 
@@ -173,16 +192,30 @@
         (return))
       (when (>= (%+ rptr 1) in-end)
         (return))
-      (let ((lo (aref in (%+ 0 rptr)))
-            (hi (aref in (%+ 1 rptr))))
+      (let* ((lo (aref in rptr))
+	     (hi (aref in (%+ 1 rptr)))
+	     (x (logior (ash hi 8) lo)))
+        (when (or (eql x #xFFFE) (eql x #xFFFF))
+	  (xerror "not a valid code point: #x~X" x))
+	(when (<= #xDC00 x #xDFFF)
+	  (xerror "unexpected high surrogate: #x~X" x))
+	(when (<= #xD800 x #xDBFF)
+	  ;; seen low surrogate, look for high surrogate now
+	  (when (>= (%+ rptr 3) in-end)
+	    (return))
+	  (let* ((lo2 (aref in (%+ 2 rptr)))
+		 (hi2 (aref in (%+ 3 rptr)))
+		 (y (logior (ash hi2 8) lo2)))
+	    (unless (<= #xDC00 x #xDFFF)
+	      (xerror "expected a high surrogate but found: #x~X" x))
+	    #-rune-is-utf-16
+	    (progn
+	      (setf x (logior (ash (%- x #xd7c0) 10) (%and y #x3FF)))
+	      (setf rptr (%+ 2 rptr))))
+	  ;; end of surrogate handling
+	  )
+	(setf (aref out wptr) x)
         (setf rptr (%+ 2 rptr))
-	;; FIXME: Wenn wir hier ein Surrogate sehen, muessen wir das naechste
-	;; Zeichen abwarten und nachgucken, dass nicht etwa die andere
-	;; Haelfte fehlt!
-        (let ((x (logior (ash hi 8) lo)))
-	  (when (or (eql x #xFFFE) (eql x #xFFFF))
-	    (xerror "not a valid code point: #x~X" x))
-	  (setf (aref out wptr) x))
         (setf wptr (%+ 1 wptr))))
     (values wptr rptr)))
 
@@ -190,7 +223,8 @@
                             in in-start in-end out out-start out-end eof?)
   (declare (optimize (speed 3) (safety 0))
            (type (simple-array (unsigned-byte 8) (*)) in)
-           (type (simple-array (unsigned-byte 16) (*)) out)
+           (type (simple-array #.+buffer-byte+ (*))
+		 out)
            (type fixnum in-start in-end out-start out-end))
   (let ((wptr out-start)
         (rptr in-start)
@@ -204,6 +238,7 @@
 				(eql x #xFFFE)
 				(eql x #xFFFF))
                             (xerror "not a valid code point: #x~X" x))
+			   #+rune-is-utf-16
 		           ((%> x #xFFFF)
                             (setf (aref out (%+ 0 wptr)) (%+ #xD7C0 (ash x -10))
                                   (aref out (%+ 1 wptr)) (%ior #xDC00 (%and x #x3FF)))
@@ -325,7 +360,7 @@
                             eof?)
   (declare (optimize (speed 3) (safety 0))
            (type (simple-array (unsigned-byte 8) (*)) in)
-           (type (simple-array (unsigned-byte 16) (*)) out)
+           (type (simple-array #.+buffer-byte+ (*)) out)
            (type fixnum in-start in-end out-start out-end))
   (let ((wptr out-start)
         (rptr in-start)
@@ -333,7 +368,7 @@
         (table (slot-value encoding 'table))) 
     (declare (type fixnum wptr rptr)
              (type (unsigned-byte 8) byte)
-             (type (simple-array (unsigned-byte 16) (*)) table))
+             (type (simple-array #.+buffer-byte+ (*)) table))
     (loop
       (when (%= wptr out-end) (return))
       (when (%>= rptr in-end) (return))
@@ -387,7 +422,7 @@
            :name ',name
            :to-unicode-table
            ',(make-array 256 
-                         :element-type '(unsigned-byte 16)
+                         :element-type '#.+buffer-byte+
                          :initial-contents codes)))
      ',name))
 
