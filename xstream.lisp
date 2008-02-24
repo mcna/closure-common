@@ -342,7 +342,6 @@
 (defun make-rod-xstream (string &key name)
   (unless (typep string 'simple-array)
     (setf string (coerce string 'simple-string)))
-  ;; XXX encoding is mis-handled by this kind of stream
   (let ((n (length string)))
     (let ((buffer (make-array (1+ n) :element-type 'buffer-byte)))
       (declare (type (simple-array buffer-byte (*)) buffer))
@@ -375,6 +374,11 @@
                    (t
                     (cond ((and (= c0 #xFE) (= c1 #xFF)) (values :utf-16-big-endian nil))
                           ((and (= c0 #xFF) (= c1 #xFE)) (values :utf-16-little-endian nil))
+                          ((and (= c0 #xEF) (= c1 #xBB))
+                           (let ((c2 (read-byte stream nil :eof)))
+                             (if (= c2 #xBF)
+                                 (values :utf-8 nil)
+                                 (values :utf-8 (list c0 c1 c2)))))
                           (t
                            (values :utf-8 (list c0 c1)))))))))))
 
