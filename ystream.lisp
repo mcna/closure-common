@@ -26,7 +26,7 @@
   `(do () (,test) ,@body))
 
 ;;; ystream
-;;;  +- utf8-ystream
+;;;  +- encoding-ystream
 ;;;  |    +- octet-vector-ystream
 ;;;  |    \- %stream-ystream
 ;;;  |        +- octet-stream-ystream
@@ -36,20 +36,30 @@
 ;;;  \-- character-stream-ystream
 
 (defstruct ystream
+  #+rune-is-character (encoding)
   (column 0 :type integer)
   (in-ptr 0 :type fixnum)
   (in-buffer (make-rod +ystream-bufsize+) :type simple-rod))
 
-(defstruct (utf8-ystream
+(defun ystream-unicode-p (ystream)
+  (let ((enc (ystream-encoding ystream)))
+    (or (eq enc :utf-8)
+	(eq (babel-encodings:enc-name enc) :utf-16))))
+
+(defstruct (encoding-ystream
 	    (:include ystream)
 	    (:conc-name "YSTREAM-"))
   (out-buffer (make-ub8-array (* 6 +ystream-bufsize+))
 	      :type (simple-array (unsigned-byte 8) (*))))
 
-(defstruct (%stream-ystream (:include utf8-ystream) (:conc-name "YSTREAM-"))
+(defstruct (%stream-ystream
+	     (:include encoding-ystream)
+	     (:conc-name "YSTREAM-"))
   (os-stream nil))
 
-(definline write-rune (rune ystream)
+;; writes a rune to the buffer.  If the rune is not encodable, an error
+;; might be signalled later during flush-ystream.
+(definline ystream-write-rune (rune ystream)
   (let ((in (ystream-in-buffer ystream)))
     (when (eql (ystream-in-ptr ystream) (length in))
       (flush-ystream ystream)
@@ -60,18 +70,85 @@
 	  (if (eql rune #/U+0010) 0 (1+ (ystream-column ystream))))
     rune))
 
+;; Writes a rod to the buffer.  If a rune in the rod not encodable, an error
+;; might be signalled later during flush-ystream.
+(defun ystream-write-rod (rod ystream)
+  ;;
+  ;; OPTIMIZE ME
+  ;;
+  (loop for rune across rod do (ystream-write-rune rune ystream)))
+
+(defun ystream-write-escapable-rune (rune ystream)
+  ;;
+  ;; OPTIMIZE ME
+  ;;
+  (let ((tmp (make-rod 1)))
+    (setf (rune tmp 0) rune)
+    (ystream-write-escapable-rod tmp ystream)))
+
+#-rune-is-character
+;;
+;; on non-unicode lisps, we only support UTF-8 anyway, so this is like
+;; ystream-write-rod, which will never signal an error in this configuration.
+(defun ystream-write-escapable-rod (rod ystream)
+  (ystream-write-rod rod ystream))
+
+;; Writes a rod to the buffer.  If a rune in the rod not encodable, it is
+;; replaced by a character reference.
+;;
+#+rune-is-character
+(defun ystream-write-escapable-rod (rod ystream)
+  ;;
+  ;; OPTIMIZE ME
+  ;;
+  (if (ystream-unicode-p ystream)
+      (ystream-write-rod rod ystream)
+      (loop
+	 with encoding = (ystream-encoding ystream)
+	 for rune across rod
+	 do
+	   (if (encodablep rune encoding)
+	       (ystream-write-rune rune ystream)
+	       (let ((cr (string-rod (format nil "&#~D;" (rune-code rune)))))
+		 (ystream-write-rod cr ystream))))))
+
+#+rune-is-character
+(defun encodablep (character encoding)
+  (handler-case
+      (babel:string-to-octets (string character) :encoding encoding)
+    (babel-encodings:character-encoding-error ()
+      nil)))
+
 (defmethod close-ystream :before ((ystream ystream))
   (flush-ystream ystream))
 
 
-;;;; UTF8-YSTREAM (abstract)
+;;;; ENCODING-YSTREAM (abstract)
 
 (defmethod close-ystream ((ystream %stream-ystream))
   (ystream-os-stream ystream))
 
 (defgeneric ystream-device-write (ystream buf nbytes))
 
-(defmethod flush-ystream ((ystream utf8-ystream))
+#-rune-is-character
+(defun encode-runes (out in ptr encoding)
+  (runes-to-utf8 out in ptr))
+
+#+rune-is-character
+(defun encode-runes (out in ptr encoding)
+  (case encoding
+    (:utf-8
+     (runes-to-utf8 out in ptr))
+    (t
+     ;; by lucky coincidence, babel::unicode-string is the same as simple-rod
+     #+nil (coerce string 'babel::unicode-string)
+     (let* ((babel::*suppress-character-coding-errors* nil)
+	    (mapping (babel::lookup-mapping babel::*string-vector-mappings*
+					    encoding)))
+       (funcall (babel::encoder mapping) in 0 ptr out 0)
+       (funcall (babel::octet-counter mapping) in 0 ptr -1)))))
+
+(defmethod flush-ystream ((ystream encoding-ystream))
   (let ((ptr (ystream-in-ptr ystream)))
     (when (plusp ptr)
       (let* ((in (ystream-in-buffer ystream))
@@ -83,7 +160,7 @@
 	(when surrogatep
 	  (decf ptr))
 	(when (plusp ptr)
-	  (setf n (runes-to-utf8 out in ptr))
+	  (setf n (encode-runes out in ptr (ystream-encoding ystream)))
 	  (ystream-device-write ystream out n)
 	  (cond
 	    #+rune-is-utf-16
@@ -92,9 +169,6 @@
 	      (setf (ystream-in-ptr ystream) 1))
 	    (t
 	      (setf (ystream-in-ptr ystream) 0))))))))
-
-(defun write-rod (rod sink)
-  (loop for rune across rod do (write-rune rune sink)))
 
 (defun fast-push (new-element vector)
   (vector-push-extend new-element vector (max 1 (array-dimension vector 0))))
@@ -201,7 +275,7 @@
 ;;;; OCTET-VECTOR-YSTREAM
 
 (defstruct (octet-vector-ystream
-	    (:include utf8-ystream)
+	    (:include encoding-ystream)
 	    (:conc-name "YSTREAM-"))
   (result (make-buffer)))
 

@@ -64,9 +64,12 @@
 
            ;; ystream.lisp
 	   #:ystream
+	   #:ystream-encoding
 	   #:close-ystream
-	   #:write-rune
-	   #:write-rod
+	   #:ystream-write-rune
+	   #:ystream-write-rod
+	   #:ystream-write-escapable-rune
+	   #:ystream-write-escapable-rod
 	   #:ystream-column
            #:make-octet-vector-ystream
            #:make-octet-stream-ystream

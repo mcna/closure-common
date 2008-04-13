@@ -65,4 +65,5 @@
      #-x&y-streams-are-stream (:file "ystream")
      #+x&y-streams-are-stream (:file #+scl "stream-scl")
      (:file "hax"))
-    :depends-on (#-scl :trivial-gray-streams))
+    :depends-on (#-scl :trivial-gray-streams
+		       #+rune-is-character :babel))
