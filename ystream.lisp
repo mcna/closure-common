@@ -83,7 +83,7 @@
   ;; OPTIMIZE ME
   ;;
   (let ((tmp (make-rod 1)))
-    (setf (rune tmp 0) rune)
+    (setf (elt tmp 0) rune)
     (ystream-write-escapable-rod tmp ystream)))
 
 #-rune-is-character
