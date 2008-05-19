@@ -25,6 +25,27 @@
 (defmacro until (test &body body)
   `(do () (,test) ,@body))
 
+(defun find-output-encoding (name)
+  (when (stringp name)
+    (setf name (find-symbol (string-upcase name) :keyword)))
+  (cond
+    ((null name)
+     (warn "Unknown encoding ~A, falling back to UTF-8" name)
+     :utf-8)
+    ((find name '(:utf-8 :utf_8 :utf8))
+     :utf-8)
+    #-rune-is-character
+    (t
+     (warn "Unknown encoding ~A, falling back to UTF-8" name)
+     :utf-8)
+    #+rune-is-character
+    (t
+     (handler-case
+	 (babel-encodings:get-character-encoding name)
+       (error ()
+	 (warn "Unknown encoding ~A, falling back to UTF-8" name)
+	 :utf-8)))))
+
 ;;; ystream
 ;;;  +- encoding-ystream
 ;;;  |    +- octet-vector-ystream

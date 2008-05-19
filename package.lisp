@@ -65,6 +65,7 @@
            ;; ystream.lisp
 	   #:ystream
 	   #:ystream-encoding
+	   #:find-output-encoding
 	   #:close-ystream
 	   #:ystream-write-rune
 	   #:ystream-write-rod
