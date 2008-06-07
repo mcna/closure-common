@@ -88,14 +88,36 @@
   (add-name :iso-8859-9 "l5") 
   (add-name :iso-8859-9 "csISOLatin5") 
 
+  (add-name :iso-8859-13 "ISO-8859-13")
+
   (add-name :iso-8859-15 "ISO_8859-15") 
   (add-name :iso-8859-15 "ISO-8859-15") 
+  (add-name :iso-8859-15 "Latin-9") 
 
   (add-name :iso-8859-14 "ISO_8859-14") 
   (add-name :iso-8859-14 "ISO-8859-14") 
+  (add-name :iso-8859-14 "ISO_8859-14:1998") 
+  (add-name :iso-8859-14 "iso-ir-199") 
+  (add-name :iso-8859-14 "latin8") 
+  (add-name :iso-8859-14 "iso-celtic") 
+  (add-name :iso-8859-14 "l8") 
 
   (add-name :koi8-r "KOI8-R") 
   (add-name :koi8-r "csKOI8R") 
+
+  (add-name :windows-1250 "windows-1250")
+
+  (add-name :windows-1251 "windows-1251")
+
+  (add-name :windows-1252 "windows-1252")
+
+  (add-name :windows-1253 "windows-1253")
+
+  (add-name :windows-1254 "windows-1254")
+
+  (add-name :windows-1255 "windows-1255")
+
+  (add-name :windows-1257 "windows-1257")
 
   (add-name :utf-8 "UTF-8") 
 
@@ -141,6 +163,10 @@
       (make-simple-8-bit-encoding 
         :charset (find-charset :iso-8859-8)))
 
+  (define-encoding :iso-8859-13
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :iso-8859-13)))
+
   (define-encoding :iso-8859-14
       (make-simple-8-bit-encoding 
         :charset (find-charset :iso-8859-14)))
@@ -152,6 +178,34 @@
   (define-encoding :koi8-r
       (make-simple-8-bit-encoding 
         :charset (find-charset :koi8-r)))
+
+  (define-encoding :windows-1250
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1250)))
+
+  (define-encoding :windows-1251
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1251)))
+
+  (define-encoding :windows-1252
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1252)))
+
+  (define-encoding :windows-1253
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1253)))
+
+  (define-encoding :windows-1254
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1254)))
+
+  (define-encoding :windows-1255
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1255)))
+
+  (define-encoding :windows-1257
+      (make-simple-8-bit-encoding 
+        :charset (find-charset :windows-1257)))
 
   (define-encoding :utf-8 :utf-8)
   )
@@ -463,6 +517,40 @@
       #| #o36x |#   #x011F #x00F1 #x00F2 #x00F3 #x00F4 #x00F5 #x00F6 #x00F7
       #| #o37x |#   #x00F8 #x00F9 #x00FA #x00FB #x00FC #x0131 #x015F #x00FF)
 
+  (define-8-bit-charset :iso-8859-13
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o21x |#   #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o22x |#   #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o23x |#   #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o24x |#   #x00A0 #x201D #x00A2 #x00A3 #x00A4 #x201E #x00A6 #x00A7
+      #| #o25x |#   #x00D8 #x00A9 #x0156 #x00AB #x00AC #x00AD #x00AE #x00C6
+      #| #o26x |#   #x00B0 #x00B1 #x00B2 #x00B3 #x201C #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x00F8 #x00B9 #x0157 #x00BB #x00BC #x00BD #x00BE #x00E6
+      #| #o30x |#   #x0104 #x012E #x0100 #x0106 #x00C4 #x00C5 #x0118 #x0112
+      #| #o31x |#   #x010C #x00C9 #x0179 #x0116 #x0122 #x0136 #x012A #x013B
+      #| #o32x |#   #x0160 #x0143 #x0145 #x00D3 #x014C #x00D5 #x00D6 #x00D7
+      #| #o33x |#   #x0172 #x0141 #x015A #x016A #x00DC #x017B #x017D #x00DF
+      #| #o34x |#   #x0105 #x012F #x0101 #x0107 #x00E4 #x00E5 #x0119 #x0113
+      #| #o35x |#   #x010D #x00E9 #x017A #x0117 #x0123 #x0137 #x012B #x013C
+      #| #o36x |#   #x0161 #x0144 #x0146 #x00F3 #x014D #x00F5 #x00F6 #x00F7
+      #| #o37x |#   #x0173 #x0142 #x015B #x016B #x00FC #x017C #x017E #x2019)
+
   (define-8-bit-charset :iso-8859-14
       #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
       #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
@@ -564,5 +652,243 @@
       #| #o35x |#   #x0425 #x0418 #x0419 #x041A #x041B #x041C #x041D #x041E
       #| #o36x |#   #x041F #x042F #x0420 #x0421 #x0422 #x0423 #x0416 #x0412
       #| #o37x |#   #x042C #x042B #x0417 #x0428 #x042D #x0429 #x0427 #x042A)
+
+  (define-8-bit-charset :windows-1250
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x20AC #xFFFF #x201A #xFFFF #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #xFFFF #x2030 #x0160 #x2039 #x015A #x0164 #x017D #x0179
+      #| #o22x |#   #xFFFF #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #xFFFF #x2122 #x0161 #x203A #x015B #x0165 #x017E #x017A
+      #| #o24x |#   #x00A0 #x02C7 #x02D8 #x0141 #x00A4 #x0104 #x00A6 #x00A7
+      #| #o25x |#   #x00A8 #x00A9 #x015E #x00AB #x00AC #x00AD #x00AE #x017B
+      #| #o26x |#   #x00B0 #x00B1 #x02DB #x0142 #x00B4 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x00B8 #x0105 #x015F #x00BB #x013D #x02DD #x013E #x017C
+      #| #o30x |#   #x0154 #x00C1 #x00C2 #x0102 #x00C4 #x0139 #x0106 #x00C7
+      #| #o31x |#   #x010C #x00C9 #x0118 #x00CB #x011A #x00CD #x00CE #x010E
+      #| #o32x |#   #x0110 #x0143 #x0147 #x00D3 #x00D4 #x0150 #x00D6 #x00D7
+      #| #o33x |#   #x0158 #x016E #x00DA #x0170 #x00DC #x00DD #x0162 #x00DF
+      #| #o34x |#   #x0155 #x00E1 #x00E2 #x0103 #x00E4 #x013A #x0107 #x00E7
+      #| #o35x |#   #x010D #x00E9 #x0119 #x00EB #x011B #x00ED #x00EE #x010F
+      #| #o36x |#   #x0111 #x0144 #x0148 #x00F3 #x00F4 #x0151 #x00F6 #x00F7
+      #| #o37x |#   #x0159 #x016F #x00FA #x0171 #x00FC #x00FD #x0163 #x02D9)
+
+  (define-8-bit-charset :windows-1251
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x0402 #x0403 #x201A #x0453 #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #x20AC #x2030 #x0409 #x2039 #x040A #x040C #x040B #x040F
+      #| #o22x |#   #x0452 #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #xFFFF #x2122 #x0459 #x203A #x045A #x045C #x045B #x045F
+      #| #o24x |#   #x00A0 #x040E #x045E #x0408 #x00A4 #x0490 #x00A6 #x00A7
+      #| #o25x |#   #x0401 #x00A9 #x0404 #x00AB #x00AC #x00AD #x00AE #x0407
+      #| #o26x |#   #x00B0 #x00B1 #x0406 #x0456 #x0491 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x0451 #x2116 #x0454 #x00BB #x0458 #x0405 #x0455 #x0457
+      #| #o30x |#   #x0410 #x0411 #x0412 #x0413 #x0414 #x0415 #x0416 #x0417
+      #| #o31x |#   #x0418 #x0419 #x041A #x041B #x041C #x041D #x041E #x041F
+      #| #o32x |#   #x0420 #x0421 #x0422 #x0423 #x0424 #x0425 #x0426 #x0427
+      #| #o33x |#   #x0428 #x0429 #x042A #x042B #x042C #x042D #x042E #x042F
+      #| #o34x |#   #x0430 #x0431 #x0432 #x0433 #x0434 #x0435 #x0436 #x0437
+      #| #o35x |#   #x0438 #x0439 #x043A #x043B #x043C #x043D #x043E #x043F
+      #| #o36x |#   #x0440 #x0441 #x0442 #x0443 #x0444 #x0445 #x0446 #x0447
+      #| #o37x |#   #x0448 #x0449 #x044A #x044B #x044C #x044D #x044E #x044F)
+
+  (define-8-bit-charset :windows-1252
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x20AC #xFFFF #x201A #x0192 #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #x02C6 #x2030 #x0160 #x2039 #x0152 #xFFFF #x017D #xFFFF
+      #| #o22x |#   #xFFFF #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #x02DC #x2122 #x0161 #x203A #x0153 #xFFFF #x017E #x0178
+      #| #o24x |#   #x00A0 #x00A1 #x00A2 #x00A3 #x00A4 #x00A5 #x00A6 #x00A7
+      #| #o25x |#   #x00A8 #x00A9 #x00AA #x00AB #x00AC #x00AD #x00AE #x00AF
+      #| #o26x |#   #x00B0 #x00B1 #x00B2 #x00B3 #x00B4 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x00B8 #x00B9 #x00BA #x00BB #x00BC #x00BD #x00BE #x00BF
+      #| #o30x |#   #x00C0 #x00C1 #x00C2 #x00C3 #x00C4 #x00C5 #x00C6 #x00C7
+      #| #o31x |#   #x00C8 #x00C9 #x00CA #x00CB #x00CC #x00CD #x00CE #x00CF
+      #| #o32x |#   #x00D0 #x00D1 #x00D2 #x00D3 #x00D4 #x00D5 #x00D6 #x00D7
+      #| #o33x |#   #x00D8 #x00D9 #x00DA #x00DB #x00DC #x00DD #x00DE #x00DF
+      #| #o34x |#   #x00E0 #x00E1 #x00E2 #x00E3 #x00E4 #x00E5 #x00E6 #x00E7
+      #| #o35x |#   #x00E8 #x00E9 #x00EA #x00EB #x00EC #x00ED #x00EE #x00EF
+      #| #o36x |#   #x00F0 #x00F1 #x00F2 #x00F3 #x00F4 #x00F5 #x00F6 #x00F7
+      #| #o37x |#   #x00F8 #x00F9 #x00FA #x00FB #x00FC #x00FD #x00FE #x00FF)
+
+  (define-8-bit-charset :windows-1253
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x20AC #xFFFF #x201A #x0192 #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #xFFFF #x2030 #xFFFF #x2039 #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o22x |#   #xFFFF #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #xFFFF #x2122 #xFFFF #x203A #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o24x |#   #x00A0 #x0385 #x0386 #x00A3 #x00A4 #x00A5 #x00A6 #x00A7
+      #| #o25x |#   #x00A8 #x00A9 #xFFFF #x00AB #x00AC #x00AD #x00AE #x2015
+      #| #o26x |#   #x00B0 #x00B1 #x00B2 #x00B3 #x0384 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x0388 #x0389 #x038A #x00BB #x038C #x00BD #x038E #x038F
+      #| #o30x |#   #x0390 #x0391 #x0392 #x0393 #x0394 #x0395 #x0396 #x0397
+      #| #o31x |#   #x0398 #x0399 #x039A #x039B #x039C #x039D #x039E #x039F
+      #| #o32x |#   #x03A0 #x03A1 #xFFFF #x03A3 #x03A4 #x03A5 #x03A6 #x03A7
+      #| #o33x |#   #x03A8 #x03A9 #x03AA #x03AB #x03AC #x03AD #x03AE #x03AF
+      #| #o34x |#   #x03B0 #x03B1 #x03B2 #x03B3 #x03B4 #x03B5 #x03B6 #x03B7
+      #| #o35x |#   #x03B8 #x03B9 #x03BA #x03BB #x03BC #x03BD #x03BE #x03BF
+      #| #o36x |#   #x03C0 #x03C1 #x03C2 #x03C3 #x03C4 #x03C5 #x03C6 #x03C7
+      #| #o37x |#   #x03C8 #x03C9 #x03CA #x03CB #x03CC #x03CD #x03CE #xFFFF)
+
+  (define-8-bit-charset :windows-1254
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x20AC #xFFFF #x201A #x0192 #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #x02C6 #x2030 #x0160 #x2039 #x0152 #xFFFF #xFFFF #xFFFF
+      #| #o22x |#   #xFFFF #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #x02DC #x2122 #x0161 #x203A #x0153 #xFFFF #xFFFF #x0178
+      #| #o24x |#   #x00A0 #x00A1 #x00A2 #x00A3 #x00A4 #x00A5 #x00A6 #x00A7
+      #| #o25x |#   #x00A8 #x00A9 #x00AA #x00AB #x00AC #x00AD #x00AE #x00AF
+      #| #o26x |#   #x00B0 #x00B1 #x00B2 #x00B3 #x00B4 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x00B8 #x00B9 #x00BA #x00BB #x00BC #x00BD #x00BE #x00BF
+      #| #o30x |#   #x00C0 #x00C1 #x00C2 #x00C3 #x00C4 #x00C5 #x00C6 #x00C7
+      #| #o31x |#   #x00C8 #x00C9 #x00CA #x00CB #x00CC #x00CD #x00CE #x00CF
+      #| #o32x |#   #x011E #x00D1 #x00D2 #x00D3 #x00D4 #x00D5 #x00D6 #x00D7
+      #| #o33x |#   #x00D8 #x00D9 #x00DA #x00DB #x00DC #x0130 #x015E #x00DF
+      #| #o34x |#   #x00E0 #x00E1 #x00E2 #x00E3 #x00E4 #x00E5 #x00E6 #x00E7
+      #| #o35x |#   #x00E8 #x00E9 #x00EA #x00EB #x00EC #x00ED #x00EE #x00EF
+      #| #o36x |#   #x011F #x00F1 #x00F2 #x00F3 #x00F4 #x00F5 #x00F6 #x00F7
+      #| #o37x |#   #x00F8 #x00F9 #x00FA #x00FB #x00FC #x0131 #x015F #x00FF)
+
+  (define-8-bit-charset :windows-1255
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x20AC #xFFFF #x201A #x0192 #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #x02C6 #x2030 #xFFFF #x2039 #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o22x |#   #xFFFF #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #x02DC #x2122 #xFFFF #x203A #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o24x |#   #x00A0 #x00A1 #x00A2 #x00A3 #x00AA #x00A5 #x00A6 #x00A7
+      #| #o25x |#   #x00A8 #x00A9 #x00D7 #x00AB #x00AC #x00AD #x00AE #x203E
+      #| #o26x |#   #x00B0 #x00B1 #x00B2 #x00B3 #x00B4 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x00B8 #x00B9 #x00F7 #x00BB #x00BC #x00BD #x00BE #x00BF
+      #| #o30x |#   #x05B0 #x05B1 #x05B2 #x05B3 #x05B4 #x05B5 #x05B6 #x05B7
+      #| #o31x |#   #x05B8 #x05B9 #xFFFF #x05BB #x05BC #x05BD #x05BE #x05BF
+      #| #o32x |#   #x05C0 #x05C1 #x05C2 #x05C3 #x05F0 #x05F1 #x05F2 #x05F3
+      #| #o33x |#   #x05F4 #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF #xFFFF
+      #| #o34x |#   #x05D0 #x05D1 #x05D2 #x05D3 #x05D4 #x05D5 #x05D6 #x05D7
+      #| #o35x |#   #x05D8 #x05D9 #x05DA #x05DB #x05DC #x05DD #x05DE #x05DF
+      #| #o36x |#   #x05E0 #x05E1 #x05E2 #x05E3 #x05E4 #x05E5 #x05E6 #x05E7
+      #| #o37x |#   #x05E8 #x05E9 #x05EA #xFFFF #xFFFF #x200E #x200F #xFFFF)
+
+  (define-8-bit-charset :windows-1257
+      #| #o00x |#   #x0000 #x0001 #x0002 #x0003 #x0004 #x0005 #x0006 #x0007
+      #| #o01x |#   #x0008 #x0009 #x000A #x000B #x000C #x000A #x000E #x000F
+      #| #o02x |#   #x0010 #x0011 #x0012 #x0013 #x0014 #x0015 #x0016 #x0017
+      #| #o03x |#   #x0018 #x0019 #x001A #x001B #x001C #x001D #x001E #x001F
+      #| #o04x |#   #x0020 #x0021 #x0022 #x0023 #x0024 #x0025 #x0026 #x0027
+      #| #o05x |#   #x0028 #x0029 #x002A #x002B #x002C #x002D #x002E #x002F
+      #| #o06x |#   #x0030 #x0031 #x0032 #x0033 #x0034 #x0035 #x0036 #x0037
+      #| #o07x |#   #x0038 #x0039 #x003A #x003B #x003C #x003D #x003E #x003F
+      #| #o10x |#   #x0040 #x0041 #x0042 #x0043 #x0044 #x0045 #x0046 #x0047
+      #| #o11x |#   #x0048 #x0049 #x004A #x004B #x004C #x004D #x004E #x004F
+      #| #o12x |#   #x0050 #x0051 #x0052 #x0053 #x0054 #x0055 #x0056 #x0057
+      #| #o13x |#   #x0058 #x0059 #x005A #x005B #x005C #x005D #x005E #x005F
+      #| #o14x |#   #x0060 #x0061 #x0062 #x0063 #x0064 #x0065 #x0066 #x0067
+      #| #o15x |#   #x0068 #x0069 #x006A #x006B #x006C #x006D #x006E #x006F
+      #| #o16x |#   #x0070 #x0071 #x0072 #x0073 #x0074 #x0075 #x0076 #x0077
+      #| #o17x |#   #x0078 #x0079 #x007A #x007B #x007C #x007D #x007E #x007F
+      #| #o20x |#   #x20AC #xFFFF #x201A #xFFFF #x201E #x2026 #x2020 #x2021
+      #| #o21x |#   #xFFFF #x2030 #xFFFF #x2039 #xFFFF #x00A8 #x02C7 #x00B8
+      #| #o22x |#   #xFFFF #x2018 #x2019 #x201C #x201D #x2022 #x2013 #x2014
+      #| #o23x |#   #xFFFF #x2122 #xFFFF #x203A #xFFFF #x00AF #x02DB #xFFFF
+      #| #o24x |#   #x00A0 #xFFFF #x00A2 #x00A3 #x00A4 #xFFFF #x00A6 #x00A7
+      #| #o25x |#   #x00D8 #x00A9 #x0156 #x00AB #x00AC #x00AD #x00AE #x00C6
+      #| #o26x |#   #x00B0 #x00B1 #x00B2 #x00B3 #x00B4 #x00B5 #x00B6 #x00B7
+      #| #o27x |#   #x00F8 #x00B9 #x0157 #x00BB #x00BC #x00BD #x00BE #x00E6
+      #| #o30x |#   #x0104 #x012E #x0100 #x0106 #x00C4 #x00C5 #x0118 #x0112
+      #| #o31x |#   #x010C #x00C9 #x0179 #x0116 #x0122 #x0136 #x012A #x013B
+      #| #o32x |#   #x0160 #x0143 #x0145 #x00D3 #x014C #x00D5 #x00D6 #x00D7
+      #| #o33x |#   #x0172 #x0141 #x015A #x016A #x00DC #x017B #x017D #x00DF
+      #| #o34x |#   #x0105 #x012F #x0101 #x0107 #x00E4 #x00E5 #x0119 #x0113
+      #| #o35x |#   #x010D #x00E9 #x017A #x0117 #x0123 #x0137 #x012B #x013C
+      #| #o36x |#   #x0161 #x0144 #x0146 #x00F3 #x014D #x00F5 #x00F6 #x00F7
+      #| #o37x |#   #x0173 #x0142 #x015B #x016B #x00FC #x017C #x017E #x02D9)
   )
 
