@@ -88,7 +88,7 @@
     (setf (elt in (ystream-in-ptr ystream)) rune)
     (incf (ystream-in-ptr ystream))
     (setf (ystream-column ystream)
-	  (if (eql rune #/U+0010) 0 (1+ (ystream-column ystream))))
+	  (if (eql rune #/U+000A) 0 (1+ (ystream-column ystream))))
     rune))
 
 ;; Writes a rod to the buffer.  If a rune in the rod not encodable, an error
