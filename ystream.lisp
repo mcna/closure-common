@@ -69,13 +69,13 @@
 
 (defstruct (encoding-ystream
 	    (:include ystream)
-	    (:conc-name "YSTREAM-"))
+	    (:conc-name #:ystream-))
   (out-buffer (make-ub8-array (* 6 +ystream-bufsize+))
 	      :type (simple-array (unsigned-byte 8) (*))))
 
 (defstruct (%stream-ystream
 	     (:include encoding-ystream)
-	     (:conc-name "YSTREAM-"))
+	     (:conc-name #:ystream-))
   (os-stream nil))
 
 ;; writes a rune to the buffer.  If the rune is not encodable, an error
@@ -280,7 +280,7 @@
   (defstruct (character-stream-ystream
 	      (:constructor make-character-stream-ystream (target-stream))
 	      (:include ystream)
-	      (:conc-name "YSTREAM-"))
+	      (:conc-name #:ystream-))
     (target-stream nil))
 
   (defmethod flush-ystream ((ystream character-stream-ystream))
@@ -297,7 +297,7 @@
 
 (defstruct (octet-vector-ystream
 	    (:include encoding-ystream)
-	    (:conc-name "YSTREAM-"))
+	    (:conc-name #:ystream-))
   (result (make-buffer)))
 
 (defmethod ystream-device-write ((ystream octet-vector-ystream) buf nbytes)
@@ -318,7 +318,7 @@
 (defstruct (octet-stream-ystream
 	    (:include %stream-ystream)
 	    (:constructor make-octet-stream-ystream (os-stream))
-	    (:conc-name "YSTREAM-")))
+	    (:conc-name #:ystream-)))
 
 (defmethod ystream-device-write ((ystream octet-stream-ystream) buf nbytes)
   (write-sequence buf (ystream-os-stream ystream) :end nbytes))
@@ -331,7 +331,7 @@
   (defstruct (character-stream-ystream/utf8
 	      (:constructor make-character-stream-ystream/utf8 (os-stream))
 	      (:include %stream-ystream)
-	      (:conc-name "YSTREAM-")))
+	      (:conc-name #:ystream-)))
 
   (defmethod ystream-device-write
       ((ystream character-stream-ystream/utf8) buf nbytes)
@@ -348,7 +348,7 @@
   (defstruct (string-ystream/utf8
 	      (:include character-stream-ystream/utf8
 			(os-stream (make-string-output-stream)))
-	      (:conc-name "YSTREAM-")))
+	      (:conc-name #:ystream-)))
 
   (defmethod close-ystream ((ystream string-ystream/utf8))
     (get-output-stream-string (ystream-os-stream ystream))))
