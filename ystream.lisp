@@ -25,9 +25,22 @@
 (defmacro until (test &body body)
   `(do () (,test) ,@body))
 
+#-allegro
+(defun keywordify (string)
+  (find-symbol (string-upcase name) :keyword))
+
+#+allegro
+(defun keywordify (name)
+  (find-symbol (ecase excl:*current-case-mode*
+                 ((:case-sensitive-lower :case-insensitive-lower)
+                  (string-downcase name))
+                 ((:case-sensitive-upper :case-insensitive-upper)
+                  (string-upcase name)))
+               :keyword))
+
 (defun find-output-encoding (name)
   (when (stringp name)
-    (setf name (find-symbol (string-upcase name) :keyword)))
+    (setf name (keywordify name)))
   (cond
     ((null name)
      (warn "Unknown encoding ~A, falling back to UTF-8" name)
