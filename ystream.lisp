@@ -27,7 +27,7 @@
 
 #-allegro
 (defun keywordify (string)
-  (find-symbol (string-upcase name) :keyword))
+  (find-symbol (string-upcase string) :keyword))
 
 #+allegro
 (defun keywordify (name)
